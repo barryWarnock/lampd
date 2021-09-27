@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.block {
+	width: 100%;
+	height: 100%;
+  color: white;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+</style>
+</head>
+<body>
+
+<button onclick="toggle()" class="block" id="button"></button>
+
+</body>
+	<script>
+		function styleButton(status) {
+			button = document.getElementById("button")
+			colour = ""
+			if (status) {
+				colour = "red"
+				content = "Turn Off"
+			} else {
+				colour = "green"
+				content = "Turn On"
+			}
+			button.style.backgroundColor = colour
+			button.textContent = content
+		}
+
+		function getStatus() {
+			Http = new XMLHttpRequest();
+			url='http://localhost:1420/lamp';
+			Http.open("GET", url);
+			Http.send();
+
+			Http.onreadystatechange = (e) => {
+				resp = Http.responseText
+				let status = false
+				if (resp == "on") {
+					status = true
+				}
+				styleButton(status)
+			}
+		}
+		getStatus()
+
+		function toggle() {
+			Http = new XMLHttpRequest();
+			url='http://localhost:1420/lamp';
+			Http.open("POST", url);
+			Http.send();
+
+			Http.onreadystatechange = (e) => {
+				resp = Http.responseText
+				let status = false
+				if (resp == "on") {
+					status = true
+				}
+				styleButton(status)
+			}
+		}
+	</script>
+</html>
